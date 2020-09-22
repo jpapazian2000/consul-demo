@@ -1,0 +1,35 @@
+global:
+  name: consul
+  image: "consul:1.8.2"
+  datacenter: aks
+
+  gossipEncryption:
+    secretName: consul-gossip-encryption-key
+    secretKey: key
+
+  acls:
+    manageSystemACLs: true
+    # If ACLs are enabled, we must create a token for secondary
+    # datacenters to replicate ACLs.
+    createReplicationToken: true
+
+  tls:
+    enabled: true
+
+  federation:
+    enabled: true
+    createFederationSecret: true
+
+ui:
+  enabled: true
+  service:
+    enabled: true
+    type: LoadBalancer
+
+connectInject:
+  enabled: true
+
+# Mesh Gateways enable Consul Connect to work across Consul datacenters.
+meshGateway:
+  enabled: true
+

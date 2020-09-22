@@ -1,0 +1,43 @@
+global:
+  name: consul
+  image: "consul:1.8.2"
+  datacenter: gke
+
+  tls:
+    enabled: true
+    caCert:
+      secretName: consul-federation
+      secretKey: caCert
+    caKey:
+      secretName: consul-federation
+      secretKey: caKey
+
+  acls:
+    manageSystemACLs: true
+    replicationToken:
+      secretName: consul-federation
+      secretKey: replicationToken
+
+  gossipEncryption:
+    secretName: consul-federation
+    secretKey: gossipEncryptionKey
+
+  federation:
+    enabled: true
+
+connectInject:
+  enabled: true
+
+# Mesh Gateways enable Consul Connect to work across Consul datacenters.
+meshGateway:
+  enabled: true
+
+server:
+  extraVolumes:
+  - type: secret
+    name: consul-federation
+    items:
+      - key: serverConfigJSON
+        path: config.json
+    load: true
+
